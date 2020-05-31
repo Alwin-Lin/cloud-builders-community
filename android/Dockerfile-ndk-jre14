@@ -1,0 +1,14 @@
+ARG project_id
+ARG android_version
+FROM gcr.io/${project_id}/android:${android_version}-ndk-r17b
+
+# Install JRE 14 at /usr/lib/jvm/jdk-14
+RUN curl --silent --show-error --location --fail --retry 3 --output /tmp/openjdk-14_bin.tar.gz https://download.java.net/openjdk/jdk14/ri/openjdk-14+36_linux-x64_bin.tar.gz
+RUN tar xvf /tmp/openjdk-14_bin.tar.gz
+RUN sudo mv jdk-14 /usr/lib/jvm
+RUN rm /tmp/openjdk-14_bin.tar.gz
+
+RUN apt-get update && \
+    apt-get install -y tar bzip2 gzip
+
+ENV JAVA_HOME /usr/lib/jvm/jdk-14
